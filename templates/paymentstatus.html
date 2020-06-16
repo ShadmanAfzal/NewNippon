@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- StyleSheet/CSS -->
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  	<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+  	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Work+Sans&display=swap" rel="stylesheet" />
+  	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+  	<!-- Script -->
+  	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    	crossorigin="anonymous"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+	    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+	    crossorigin="anonymous"></script>
+  	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+	    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+	    crossorigin="anonymous"></script>
+  	<script src="{% static 'css/script.js' %}"></script>
+
+</head>
+<body>
+    <!-- <div class="container">
+        {{response}}
+        <div class="col my-4">
+            <h2>Payment status regarding your order Id {{response.ORDERID}}</h2>
+            {% if response.RESPCODE == '01' %}
+            ORDER SUCCESS
+            {% else %}
+            ORDER FAILURE
+            {% endif%}
+        </div>
+    </div> -->
+<div class="container ">
+    <div class="row justify-content-center my-5">
+        <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <address>
+                        <strong>Elf Cafe</strong>
+                        <br>
+                        2135 Sunset Blvd
+                        <br>
+                        Los Angeles, CA 90026
+                        <br>
+                        <abbr title="Phone">P:</abbr> (213) 484-6829
+                    </address>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <p>
+                        <em>Date: 1st November, 2013</em>
+                    </p>
+                    <p>
+                        <em>Receipt #: 34522677W</em>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-center">
+                    <h1>Receipt</h1>
+                </div>
+                </span>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>#</th>
+                            <th class="text-center">Price</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-md-9"><em>Baked Rodopa Sheep Feta</em></h4></td>
+                            <td class="col-md-1" style="text-align: center"> 2 </td>
+                            <td class="col-md-1 text-center">$13</td>
+                            <td class="col-md-1 text-center">$26</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-9"><em>Lebanese Cabbage Salad</em></h4></td>
+                            <td class="col-md-1" style="text-align: center"> 1 </td>
+                            <td class="col-md-1 text-center">$8</td>
+                            <td class="col-md-1 text-center">$8</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-9"><em>Baked Tart with Thyme and Garlic</em></h4></td>
+                            <td class="col-md-1" style="text-align: center"> 3 </td>
+                            <td class="col-md-1 text-center">$16</td>
+                            <td class="col-md-1 text-center">$48</td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td class="text-right">
+                            <p>
+                                <strong>Subtotal: </strong>
+                            </p>
+                            <p>
+                                <strong>Tax: </strong>
+                            </p></td>
+                            <td class="text-center">
+                            <p>
+                                <strong>$6.94</strong>
+                            </p>
+                            <p>
+                                <strong>$6.94</strong>
+                            </p></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                            <td class="text-center text-danger"><h4><strong>$31.53</strong></h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success btn-lg btn-block">
+                    Pay Now   <span class="glyphicon glyphicon-chevron-right"></span>
+                </button></td>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,429 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- StyleSheet/CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Work+Sans&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  {% if user.is_authenticated %}<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">{% endif %}
+  
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+  integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+  crossorigin="anonymous"></script>
+  <script src="{% static 'css/script.js' %}"></script>
+  
+  <!-- Title -->
+  {% for item in detail %}<title>New Nippon | {{item.name}}</title>{% endfor %}
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Montaga&family=Roboto+Slab:wght@500&family=Ubuntu:wght@500&display=swap");
+
+    p {
+      font-family: "Work Sans", sans-serif;
+      font-size: 18px;
+    }
+
+    img {
+      border-radius: 8px;
+    }
+
+    
+
+.modal-header {
+    border-bottom: 0 none;
+}
+       .form-control:focus {
+      border-color: #D3D3D3;
+      box-shadow: 0 8px 6px -6px #999;
+    }
+
+    .modal-content  {
+    -webkit-border-radius: 10px !important;
+    -moz-border-radius: 10px !important;
+    border-radius: 10px !important; 
+}
+
+
+    h3 {
+      font-size: 40px;
+      font-family: 'Ubuntu', sans-serif;
+    }
+
+      label {
+      font-family: "Work Sans", sans-serif;
+    }
+
+    input {
+      font-family: "Work Sans", sans-serif;
+    }
+
+
+
+  </style>
+</head>
+
+<body>
+  <section class="background">
+    <nav class="navbar navbar-expand-md navbar-light bg-dark">
+      <a class="navbar-brand" href="#" style="font-size: 20px;">New Nippon</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" id="btn" onclick="hide()">
+        <span><i class="fa fa-navicon" style="color: #fff; font-size: 28px;"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+          </li>
+          {% if user.is_authenticated %}
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModalCenter">Login</a>
+          </li>
+          {% endif %}
+              {% if user.is_authenticated %}<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <i class="fa fa-shopping-cart"></i> My Cart
+        </a>
+        <div class="dropdown-menu" id="dropdown-menu" aria-labelledby="navbarDropdown" style='font-family: "Work Sans", sans-serif !important;'>
+          {% for item in cart_item %}
+          
+            {% if forloop.counter < 5 %}
+            <a class="dropdown-item" href="/details/{{item.product_type}}/{{item.product_name}}">{{item.product_name}}</a>
+            {% endif %}
+              
+          {% endfor %}
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/my_cart">View All ({{cart_item|length}})</a>
+        </div>
+      </li>{% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="/#products">Products</a>
+          </li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          {% endif %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/#sticky-footer">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% for item in detail %}
+   <div class="jumbotron p-3 p-md-5 text-white bg-dark" style="border-radius: 0px;">
+        <div class="row">
+          <div class="col-md-6 px-2 my-auto">
+            <h1 class="display-4 font-italic">{{item.name}}</h1>
+            <p class="lead my-3">{{item.small_desc}}</p>
+          </div>
+          <div class="col-md-5 my-auto">
+            <img src="{{item.image.url}}" alt="" srcset="" class="img-fluid" />
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+    
+  </section>
+  <section class="checkout mt-3">
+    {% for item in detail %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-8 mb-5">
+          <div>
+            <h2 style="color: black;">Specification</h2>
+            {{item.details|safe}}
+            <div>
+              <h2 style="color: black; font-family: 'Work Sans', sans-serif;">Price: ₹ {{item.price|intcomma}}</h2>
+              <span style="font-family: 'Work Sans', sans-serif;" class="text-danger">* Including GST</span>
+              <br>
+              <span style="font-family: 'Work Sans', sans-serif;" class="text-primary">* Delivary Charges May Applied</span>
+            </div>
+            <br>
+            {% if user.is_authenticated %}<button class="btn btn-dark col-lg-5 my-2 button" style="color: white !important" id="atc">
+              Add to Cart
+            </button>
+            {% else %}
+            <button  data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-secondary col-lg-5 my-2 button" style="color: white !important">
+              Add to Cart
+            </button>
+            {% endif %}
+            <a href="/buy/{{items}}/{{item.name}}" class="btn btn-danger col-lg-5" role="button" style="color: white !important">Buy Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+      
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fa fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/login" method="POST">{% csrf_token %}
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user"></i></span>
+    </div>
+    <input type="text" class="form-control" placeholder="Username" name="username" required>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-lock"></i></span>
+    </div>
+    <input type="password" class="form-control" placeholder="Password" name="password" required>
+  </div>
+  <input type="hidden" name="next" value="{{ request.path }}">
+  <div class="row">
+    <div class="col-md-2">
+      
+      <button type="submit" class="btn btn-success">Login</button>
+    </div>
+    <div class="col-md-5">
+      <p  id="hello" style="font-family: 'Merriweather', serif; color: #525050 !important; cursor: pointer;"><small>Click to Register</small></p>
+    </div>
+  </div>
+</form>
+  
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Sign In Modal -->
+  <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times"></i></span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <form action="/signup" method="POST" >{% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Username" name="username"  required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+            </div>
+            <input type="email" class="form-control" placeholder="Email" name="email" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" placeholder="Password" name="password" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" placeholder="Confirm Password" required>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-success">Signup</button>
+            </div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  <!-- Login Confirmation -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          {% if messages %}{% for message in messages %}<h5 style="color: black; font-family: 'Poppins', sans-serif;"><i class="fa fa-exclamation-triangle"></i> {{message}}</h5>{% endfor %}{% endif %}
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content" style="border-radius: 6px !important;">
+        <div class="modal-header bg-dark" id="modal-body">
+          <h5 style="color: white; font-family: 'Roboto', sans-serif;">
+            <i class="fa fa-shopping-cart"></i> Added to Cart</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times" style="color: white"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+   <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>About Us</h3>
+                    <p style="font-size: 16px;">New Nippon is an authorized computer dealer of all leading brands in India offering a wide range of Computer Devices and
+                    related peripheral devices including accessories like RAM, HDD, SMPS etc. right from giving Box Packed (Sealed Pack),
+                    Refurbished and Brand new.</p>
+                </div>
+                <div class="col-md-3">
+                    <h3>Services</h3>
+                    <ul>
+                        <li>
+                            <a href="/#home">Home</a>
+                        </li>
+                        <li>
+                            <a href="/#products">Products</a>
+                        </li>
+                        <li>
+                            <a href="#">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">Signup </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Address</h3>
+                    <h4>Corporate Office:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> A-294, Okhla Industrial Area, Phase-I,
+                                New Delhi – 110020
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 8377979730, 9999058310
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41617771
+                            </p>
+                        </li>
+                    </ul>
+                    <h4>Retail Store:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> G7A/2, Shakuntala Building-59,
+                                Nehru Place New Delhi – 110019
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 9711998757
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41761481
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-envelope" style="font-size: 20px;"></i> <a href="mailto: info@newnippon.in">info@newnippon.in</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Locate Us on Map</h3>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14018.899165114288!2d77.2519666!3d28.5479907!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce39582e194c3%3A0x16a0bdc76266250!2sNEW+NIPPON+RETAIL+STORE!5e0!3m2!1sen!2sin!4v1561634096645!5m2!1sen!2sin"
+                        width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+{% if user.is_authenticated %}<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>{% endif %}
+<script>
+  {% if messages %}
+  {% for message in messages %}
+    if( "{{message}}" == "Login successfully" || "{{message}}" == "Signup successfully"){
+    console.log("logged in");
+    $("#exampleModal").modal("show");
+  }
+  {% endfor %}
+  {% endif %}
+  
+  $(function () {
+      $("#hello").click(function () {
+        $("#exampleModalCenter").modal("hide");
+        $("#exampleModalCenter1").modal("show");
+      });
+    });
+    
+    {% for item in detail %}
+  $("#atc").click(function (event) {
+        event.preventDefault();
+        $.ajax({
+          url :  "/add_to_cart",
+          type : "POST",
+          data : {
+            "Product_name":"{{item.name}}",
+            "User_email": "{{user.get_email}}",
+            "Price": "{{item.price}}",
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          },
+          success : function(response){
+            jQuery.noConflict();
+            // $("#cartModal").text(response.status);
+            var mymodal = $('#cartModal');
+            mymodal.find('.modal-header').find('h5').text(response.status);
+            $("#cartModal").modal("show");
+            $("#dropdown-menu").prepend("<a class='dropdown-item' href='/details/"+response.product_type+"/"+response.product_name+"'>"+response.product_name+"</a>");
+            $(".dropdown-divider").html('').append("<a class='dropdown-item' href='/my_cart'>View All (10)</a>");
+          }
+        });
+      });
+      {% endfor %}
+</script>
+</html>

@@ -1,0 +1,522 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="New Nippon">
+    <meta name="keywords" content="Refurbished laptops macbook pro">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Satisfy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Work+Sans&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Script -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'css/script.js' %}"></script>
+
+    <!-- Title -->
+    <title>New Nippon</title>
+    <style>
+        p {
+            font-family: "Work Sans", sans-serif;
+            font-size: 20px;
+        }
+
+        li {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: "Work Sans", sans-serif;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="top" id="home">
+        <nav class="navbar navbar-expand-md navbar-light">
+            <a class="navbar-brand" href="#" style="font-size: 20px">New Nippon</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fa fa-navicon" style="color:#fff; font-size:28px;"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+                    </li>
+                    {% if user.is_authenticated %}<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/my_cart" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-shopping-cart"></i> My Cart
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown"
+                            style='font-family: "Work Sans", sans-serif !important;'>
+                            {% for item in cart_item %}
+
+                            {% if forloop.counter < 5 %}
+                            <a class="dropdown-item"
+                                href="/details/{{item.product_type}}/{{item.product_name}}">{{item.product_name}}</a>
+                            {% endif %}
+
+
+
+                            {% endfor %}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/my_cart">View All ({{cart_item|length}})</a>
+                        </div>
+                    </li>{% endif %}
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#products">Products</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModalCenter">Login</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#sticky-footer">Contact</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <div style="text-align: center; margin-top: 100px">
+            <h2 style="font-size: 30px !important;">Welcome to,</h2>
+            <h1 class="top_intro" style="font-size: 67px !important;">New Nippon</h1>
+            <h3 style="padding-top: 20px; font-family: 'Satisfy', cursive; font-size: 45px;">One Stop Detination for
+                your Electronic Needs...</h3>
+        </div>
+    </section>
+    <section class="about">
+        <div class="container">
+            <h1 style="color: black;" class="mt-5">What are Refurbished Electronics</h1>
+            <p>Refurbished products are products that have been repaired or restored to a like-new condition.Products
+                sold on<b> New Nippon </b>Renewed will show minimal to no signs of wear and tear, and looks like new to
+                the naked eye when held 12 inches away.</p>
+        </div>
+    </section>
+    <section class="products" id="products">
+        <div class="container mt-5" id="laptops" style="margin-bottom: 20px !important;">
+            <h1 style="color: black;">Special Offers on Laptops</h1>
+        </div>
+        <div class="container mt-4">
+            <div id="carousel-example" class="carousel slide hidden-xs" data-ride="carousel">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="row">
+                            {% for items in electronic %}
+                            <div class="col-sm-3">
+                                <div class="col-item mb-1 mt-3">
+                                    <div class="photo">
+                                        <a href="/details/laptop/{{items.name}}"><img src="{{items.image.url}}"
+                                                class="img-responsive" alt="a" /></a>
+                                    </div>
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="price col-md-6">
+                                                <h5
+                                                    style="font-family: 'Roboto Slab', serif !important; font-size: 20px !important;">
+                                                    {{items.name}}</h5>
+                                                <h4 class="price-text-color"
+                                                    style="font-family: 'Roboto Slab', serif !important; font-size: 20px !important;">
+                                                    ₹{{items.price|intcomma}}</h4>
+                                            </div>
+                                            <div class="rating hidden-sm col-md-6">
+                                                {% for star in "x"|rjust:items.reviews %}
+                                                <i class="price-text-color fa fa-star text-danger"></i>
+                                                {% endfor %}
+                                                {% if items.reviews == 4 %}
+                                                <i class="fa fa-star"></i>
+                                                {% elif items.reviews == 3 %}
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                                {% elif items.reviews == 2 %}
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                {% elif items.reviews == 1 %}
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                                {% elif  items.reviews == 0 %}
+                                                {% for star in "x"|rjust:5 %}
+                                                <i class="fa fa-star"></i>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <!-- <div class="separator clear-left">
+                                        <p class="btn-add">
+                                            <i class="fa fa-shopping-basket"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">Cart</a></p>
+                                        <p class="btn-details">
+                                            <i class="fa fa-bookmark"></i><a href="/details/laptop/{{items.name}}" class="hidden-sm">Details</a></p>
+                                    </div>
+                                    <div class="clearfix">
+                                    </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4" id="laptops" style="margin-bottom: 20px !important;">
+            <h1 style="color: black;">Latest Mobile Phones</h1>
+        </div>
+        <div class="container mt-4">
+            <div id="carousel-example" class="carousel slide hidden-xs" data-ride="carousel">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="row">
+                            {% for items in mobile %}
+                            <div class="col-sm-3">
+                                <div class="col-item mb-1 mt-3">
+                                    <div class="photo">
+                                        <a href="/details/mobile/{{items.name}}"><img src="{{items.image.url}}"
+                                                class="img-responsive" alt="a" /></a>
+                                    </div>
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="price col-md-6">
+                                                <h5
+                                                    style="font-family: 'Roboto Slab', serif !important; font-size: 20px !important;">
+                                                    {{items.name}}</h5>
+                                                <h4 class="price-text-color"
+                                                    style="font-family: 'Roboto Slab', serif !important; font-size: 20px !important;">
+                                                    ₹{{items.price|intcomma}}</h4>
+                                            </div>
+                                            <div class="rating hidden-sm col-md-6">
+                                                {% for star in "x"|rjust:items.reviews %}
+                                                <i class="price-text-color fa fa-star text-danger"></i>
+                                                {% endfor %}
+
+                                                {% if items.reviews == 3 %}
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                                {% elif items.reviews == 4 %}
+                                                <i class="fa fa-star"></i>
+                                                {% elif items.reviews == 2 %}
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                {% elif items.reviews == 1 %}
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                                {% elif  items.reviews == 0 %}
+                                                {% for star in "x"|rjust:5 %}
+                                                <i class="fa fa-star"></i>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <!-- <div class="separator clear-left">
+                                        <p class="btn-add">
+                                            <i class="fa fa-shopping-basket"></i><a href="/details/{{items.name}}" class="hidden-sm">Cart</a></p>
+                                        <p class="btn-details">
+                                            <i class="fa fa-bookmark"></i><a href="/details/mobile/{{items.name}}" class="hidden-sm">Details</a></p>
+                                    </div>
+                                    <div class="clearfix">
+                                    </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Work Sans', sans-serif !important; font-size: 28px !important;">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/login" method="POST">{% csrf_token %}
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Username" name="username" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <input type="password" class="form-control" placeholder="Password" name="password" required>
+                        </div>
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <div class="row">
+                            <div class="col-md-2">
+
+                                <button type="submit" class="btn btn-danger">Login</button>
+                            </div>
+                            <div class="col-md-5">
+                                <p id="hello"
+                                    style="font-family: 'Merriweather', serif; color: #525050 !important; cursor: pointer;">
+                                    <small>Click to Register</small></p>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Work Sans', sans-serif !important; font-size: 28px !important;">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/signup" method="POST">{% csrf_token %}
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Username" name="username" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <input type="email" class="form-control" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <input type="password" class="form-control" placeholder="Password" name="password" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <input type="password" class="form-control" placeholder="Confirm Password" required>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-danger">Signup</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Confirmation -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    {% if messages %}{% for message in messages %}<h5
+                        style="color:white !important; font-family: 'Work Sans', sans-serif !important; font-size: 28px !important;"><i
+                            class="fa fa-exclamation-triangle"></i>
+                        {{message}}</h5>{% endfor %}{% endif %}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" style="color: white !important;"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- <a href="#myModal" class="trigger-btn" data-toggle="modal">HEllo</a> -->
+<div id="success" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="material-icons">&#xE876;</i>
+                    </div>                
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Your Order has been confirmed. Check your email for detials.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div id="fail" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box" style="background: #d9534f !important;">
+                        <i class="material-icons" >close</i>
+                    </div>
+                    
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Your Order has been failed. Check your email for detials.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger btn-block" data-dismiss="modal" style="background: #d9534f !important;">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="about mb-5">
+        <div class="container">
+            <h1 style="color: black;" class="mt-5">About Us</h1>
+            {% for about in about %}
+            {{about.details|safe}}
+            {% endfor %}
+        </div>
+    </section>
+    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>About Us</h3>
+                    <p style="font-size: 16px;">New Nippon is an authorized computer dealer of all leading brands in India offering a wide range of Computer Devices and
+                    related peripheral devices including accessories like RAM, HDD, SMPS etc. right from giving Box Packed (Sealed Pack),
+                    Refurbished and Brand new.</p>
+                </div>
+                <div class="col-md-3">
+                    <h3>Services</h3>
+                    <ul>
+                        <li>
+                            <a href="/#home">Home</a>
+                        </li>
+                        <li>
+                            <a href="/#products">Products</a>
+                        </li>
+                        <li>
+                            <a href="#">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">Signup </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Address</h3>
+                    <h4>Corporate Office:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> A-294, Okhla Industrial Area, Phase-I,
+                                New Delhi – 110020
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 8377979730, 9999058310
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41617771
+                            </p>
+                        </li>
+                    </ul>
+                    <h4>Retail Store:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> G7A/2, Shakuntala Building-59,
+                                Nehru Place New Delhi – 110019
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 9711998757
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41761481
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-envelope" style="font-size: 20px;"></i> <a href="mailto: info@newnippon.in">info@newnippon.in</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Locate Us on Map</h3>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14018.899165114288!2d77.2519666!3d28.5479907!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce39582e194c3%3A0x16a0bdc76266250!2sNEW+NIPPON+RETAIL+STORE!5e0!3m2!1sen!2sin!4v1561634096645!5m2!1sen!2sin"
+                        width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        {% if messages %}
+        {% for message in messages %}
+        console.log("{{message}}")
+        if ("{{message}}" == "Login successfully" || "{{message}}" == "Signup successfully") {
+            console.log("logged in");
+            $("#exampleModal").modal("show");
+        }
+        if ("{{message}}" == "success"){
+            console.log("here");
+            $("#success").modal("show");
+        }
+        if ("{{message}}" == "failed"){
+            console.log("here");
+            $("#fail").modal("show");
+        }
+        {% endfor %}
+        {% endif %}
+
+        $(function () {
+            $("#hello").click(function () {
+                $("#exampleModalCenter").modal("hide");
+                $("#exampleModalCenter1").modal("show");
+            });
+        });
+    </script>
+</body>
+
+</html>

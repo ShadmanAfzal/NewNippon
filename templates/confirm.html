@@ -1,0 +1,326 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>New Nippon | Buy</title>
+	
+	 <!-- StyleSheet/CSS -->
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  	<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+  	<link href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Work+Sans&display=swap" rel="stylesheet" />
+  	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+  	<!-- Script -->
+  	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    	crossorigin="anonymous"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+	    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+	    crossorigin="anonymous"></script>
+  	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+	    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+	    crossorigin="anonymous"></script>
+  	<script src="{% static 'css/script.js' %}"></script>
+
+  	<style type="text/css" media="screen">
+
+    p {
+      font-family: "Work Sans", sans-serif;
+    }
+    img {
+      border-radius: 10px;
+    }
+  		.nav-item a {
+  			color: black !important;
+  		}
+
+  		 a {
+  			color: black !important;
+  		}
+
+  		    .form-control:focus {
+      border-color: #D3D3D3;
+      box-shadow: none;
+    }
+
+    label {
+      font-family: "Work Sans", sans-serif;
+    }
+
+    input {
+      font-family: "Work Sans", sans-serif;
+    }
+
+
+  		.navbar
+        {
+            border-bottom: 1px solid #D3D3D3;
+            -webkit-box-shadow: 0 8px 6px -6px #999;
+    		-moz-box-shadow: 0 8px 6px -6px #999;
+    		box-shadow: 0 8px 6px -6px #999;
+    		border-radius: 0 0 15px 15px;
+        }
+
+        .background {
+        	height: 100%
+        }
+
+        input::-webkit-outer-spin-button,
+    	input::-webkit-inner-spin-button {
+      		-webkit-appearance: none !important;
+      		margin: 0;
+    		}
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    h3 {
+      color: black !important;
+    }
+  	</style>
+
+</head>
+<body>
+	<section class="background">
+    <nav class="navbar navbar-expand-md navbar-light">
+      <a class="navbar-brand" href="#" style="font-size: 20px; color: black !important;">New Nippon</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" id="btn" onclick="hide()">
+        <span><i class="fa fa-navicon" style="color: black; font-size: 28px;"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+          </li>
+         
+                {% if user.is_authenticated %}<li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-shopping-cart"></i> My Cart
+                  </a>
+                  <div class="dropdown-menu" id="dropdown-menu" aria-labelledby="navbarDropdown"
+                    style='font-family: "Work Sans", sans-serif !important;'>
+                    {% for item in cart_item %}
+                
+                    {% if forloop.counter < 5 %}
+                    <a class="dropdown-item" href="/details/{{item.product_type}}/{{item.product_name}}">{{item.product_name}}</a>
+                    {% endif %}
+                
+                    {% endfor %}
+                    {% if user.is_authenticated %}
+                    {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModalCenter">Login</a>
+                </li>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/my_cart">View All ({{cart_item|length}})</a>
+                </div>
+                </li>{% endif %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/#products">Products</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="/#sticky-footer">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </section>
+  		<section>
+  			{% for item in details %}
+  			<div class="container mt-4">
+  				<div class="row">
+  					<div class="col-md-5  my-auto">
+  						<img src="{{item.image.url}}" alt="" class="img-fluid">
+  					</div>
+  					<div class="col-md-7">
+          <form method="POST" action="/order" id="form">{% csrf_token %}
+            <input type="text" name="type" value="{{type}}" id="" readonly hidden>
+          	<div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Product Name</label>
+                <input type="text" class="form-control" id="inputEmail4" name="Product_Name" placeholder="Name" value="{{item.name}}" readonly="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Price</label>
+                <input type="text" class="form-control" id="inputPassword4" value="{{item.price|intcomma}}" readonly="true">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Delivery Charges</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="Name" value="200" readonly="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Grand Total</label>
+                <input type="text" class="form-control" id="inputPassword4" value="{{item.price|add:200|intcomma}}" readonly="true">
+              </div>
+            </div>
+            
+<h3>Shipping Details</h3>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Name</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="Name" name="name" required="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Phone Number</label>
+                <input type="number" class="form-control" id="inputPassword4" placeholder="Phone Number" name="phone" required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" name="address" required="true">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">Address 2</label>
+              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" name="address1">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">Landmarks</label>
+                <input type="text" class="form-control" name="landmark" id="inputCity" required="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity" name="city" required="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control" name="state" required="true">
+                  <option selected>Choose...</option>
+                  <option>Andhra Pradesh</option>
+                  <option>Delhi</option>
+                  <option>Haryana</option>
+                  <option>Punjab</option>
+                  <option>Goa</option>
+                  <option>Mumbai</option>
+                  <option>Bihar</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Gujarat</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Rajasthan</option>
+                  <option>West Bengal</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputZip">Zip</label>
+                <input name="zip" type="text" class="form-control" id="inputZip" required="true">
+              </div>
+            </div>
+      
+            <div class="col-lg-12 text-center mb-5">
+              <button type="submit" class="btn btn-primary col-lg-6">Place Order</button>
+            </div>
+          </form>
+  		
+        		</div>
+  				</div>
+  			</div>
+        
+  		{% endfor %}
+  		</section>
+       <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3 style="color: white !important;">About Us</h3>
+                    <p style="font-size: 16px;">New Nippon is an authorized computer dealer of all leading brands in India offering a wide range of Computer Devices and
+                    related peripheral devices including accessories like RAM, HDD, SMPS etc. right from giving Box Packed (Sealed Pack),
+                    Refurbished and Brand new.</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="color: white !important;">Services</h3>
+                    <ul>
+                        <li>
+                            <a href="/#home">Home</a>
+                        </li>
+                        <li>
+                            <a href="/#products">Products</a>
+                        </li>
+                        <li>
+                            <a href="#">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">Signup </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="color: white !important;">Address</h3>
+                    <h4>Corporate Office:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> A-294, Okhla Industrial Area, Phase-I,
+                                New Delhi – 110020
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 8377979730, 9999058310
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41617771
+                            </p>
+                        </li>
+                    </ul>
+                    <h4>Retail Store:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> G7A/2, Shakuntala Building-59,
+                                Nehru Place New Delhi – 110019
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 9711998757
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41761481
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-envelope" style="font-size: 20px;"></i> <a href="mailto: info@newnippon.in">info@newnippon.in</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3 style="color: white !important;">Locate Us on Map</h3>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14018.899165114288!2d77.2519666!3d28.5479907!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce39582e194c3%3A0x16a0bdc76266250!2sNEW+NIPPON+RETAIL+STORE!5e0!3m2!1sen!2sin!4v1561634096645!5m2!1sen!2sin"
+                        width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

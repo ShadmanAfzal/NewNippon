@@ -1,0 +1,374 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Nippon | My Cart</title>
+
+    <!-- StyleSheet/CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Work+Sans&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Script -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'css/script.js' %}"></script>
+
+    <style>
+        .navbar {
+            border-bottom: 1px solid #D3D3D3;
+            -webkit-box-shadow: 0 8px 6px -6px #999;
+            -moz-box-shadow: 0 8px 6px -6px #999;
+            box-shadow: 0 8px 6px -6px #999;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .product-name h4 small{
+            font-family: 'PT Sans', sans-serif !important;
+        }
+
+
+        .quantity {
+            float: left;
+            margin-right: 15px;
+            background-color: #eee;
+            position: relative;
+            width: 80px;
+            overflow: hidden
+        }
+
+        .quantity input {
+            margin: 0;
+            text-align: center;
+            width: 15px;
+            height: 15px;
+            padding: 0;
+            float: right;
+            color: #000;
+            font-size: 20px;
+            border: 0;
+            outline: 0;
+            background-color: #F6F6F6
+        }
+
+        .quantity input.qty {
+            position: relative;
+            border: 0;
+            width: 100%;
+            height: 40px;
+            padding: 10px 25px 10px 10px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 15px;
+            border-radius: 0;
+            background-clip: padding-box
+        }
+
+        .quantity .minus,
+        .quantity .plus {
+            line-height: 0;
+            background-clip: padding-box;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            -webkit-background-size: 6px 30px;
+            -moz-background-size: 6px 30px;
+            color: #bbb;
+            font-size: 20px;
+            position: absolute;
+            height: 50%;
+            border: 0;
+            right: 0;
+            padding: 0;
+            width: 25px;
+            z-index: 3;
+        }
+
+        hr {
+            border-top: 1px solid #D3D3D3; 
+        }
+
+        .quantity .minus:hover,
+        .quantity .plus:hover {
+            background-color: #dad8da
+        }
+
+        .quantity .minus {
+            bottom: 0
+        }
+
+        .shopping-cart {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light">
+        <a class="navbar-brand" href="#" style="font-size: 20px; color: black !important;">New Nippon</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" id="btn" onclick="hide()">
+            <span><i class="fa fa-navicon" style="color: black; font-size: 28px;"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ml-auto" id="cart">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" style="color: black !important;">Home<span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#products" style="color: black !important;">Products</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/#sticky-footer" style="color: black !important;">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    </section>
+    <section class="my_cart">
+        <div class="container-fluid">
+            <div class="card shopping-cart">
+
+                <div class="card-body">
+                    {% for item in cart_list %}
+                    <div class="{{item.id}}">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-2 text-center">
+                                {% if item.product_type == "laptop" %}
+                                <img class="img-fluid" src="{{item.Laptop_details.image.url}}" alt="prewiew" style="border-radius: 10px;">
+                                {% else %}
+                                <img class="img-fluid" src="{{item.Mobile_details.image.url}}" alt="prewiew" style="border-radius: 10px;">
+                                {% endif %}
+                        
+                            </div>
+                            <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
+                                <h4 class="product-name" style="font-family: 'Roboto', sans-serif;"><strong>{{item.product_name}}</strong></h4>
+                                <h5>
+                                    {% if item.product_type == "laptop" %}
+                                    <small
+                                        style="font-family: 'Work Sans', sans-serif; word-wrap: break-word;">{{item.Laptop_details.small_desc}}</small>
+                        
+                                    {% else %}
+                                    <small
+                                        style="font-family: 'Work Sans', sans-serif; word-wrap: break-word;">{{item.Mobile_details.small_desc}}</small>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                            <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                                <div class="col-6 col-sm-6 col-md-6 text-md-right" style="padding-top: 5px">
+                                    <h6><strong style="font-family: 'Roboto', sans-serif;">₹ {{item.price|intcomma}}</strong></h6>
+                                </div>
+                                <div class="col-6 col-sm-6 col-md-6 text-right">
+                                    <button type="button" id="{{item.id}}" class="btn btn-danger btn-sm remove">
+                                        <i class="fa fa-trash" aria-hidden="true" style="font-size: 19px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    {% endfor %}
+                </div>
+                    <div class="pull-right" style="margin-bottom: 30px; margin-right: 20px;">
+                        <a href="" class="btn btn-success pull-right" data-toggle="modal" data-target="#exampleModalCenter1" style="color: white !important; font-family: 'Roboto', sans-serif;">Checkout</a>
+                        <div class="pull-right" style="margin: 5px">
+                            Total price: <b>₹</b> <b id="amount">{{amount|intcomma}}</b>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLongTitle" style="color:black !important">Shipping Details</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times"></i></span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <form action="/order/my_cart" method="POST" >{% csrf_token %}
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Name</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="Name" name="name" required="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Phone Number</label>
+                <input type="number" class="form-control" id="inputPassword4" placeholder="Phone Number" name="phone" required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" name="address" required="true">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">Address 2</label>
+              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" name="address1">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">Landmarks</label>
+                <input type="text" class="form-control" name="landmark" id="inputCity" required="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity" name="city" required="true">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control" name="state" required="true">
+                  <option selected>Choose...</option>
+                  <option>Andhra Pradesh</option>
+                  <option>Delhi</option>
+                  <option>Haryana</option>
+                  <option>Punjab</option>
+                  <option>Goa</option>
+                  <option>Mumbai</option>
+                  <option>Bihar</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Gujarat</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Rajasthan</option>
+                  <option>West Bengal</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputZip">Zip</label>
+                <input name="zip" type="text" class="form-control" id="inputZip" required="true">
+              </div>
+            </div>
+      
+            <div class="col-lg-12 text-center mb-5">
+              <button type="submit" class="btn btn-primary col-lg-6">Place Order</button>
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    </section>
+    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>About Us</h3>
+                    <p style="font-size: 16px;">New Nippon is an authorized computer dealer of all leading brands in India offering a wide range of Computer Devices and
+                    related peripheral devices including accessories like RAM, HDD, SMPS etc. right from giving Box Packed (Sealed Pack),
+                    Refurbished and Brand new.</p>
+                </div>
+                <div class="col-md-3">
+                    <h3>Services</h3>
+                    <ul>
+                        <li>
+                            <a href="/#home">Home</a>
+                        </li>
+                        <li>
+                            <a href="/#products">Products</a>
+                        </li>
+                        <li>
+                            <a href="#">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">Signup </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Address</h3>
+                    <h4>Corporate Office:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> A-294, Okhla Industrial Area, Phase-I,
+                                New Delhi – 110020
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 8377979730, 9999058310
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41617771
+                            </p>
+                        </li>
+                    </ul>
+                    <h4>Retail Store:</h4>
+                    <ul>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-home" style="font-size: 18px;"></i> G7A/2, Shakuntala Building-59,
+                                Nehru Place New Delhi – 110019
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-mobile-phone" style="font-size: 20px;"></i> 9711998757
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-phone" style="font-size: 20px;"></i> +91-11-41761481
+                            </p>
+                        </li>
+                        <li>
+                            <p style="font-size: 16px;">
+                                <i class="fa fa-envelope" style="font-size: 20px;"></i> <a href="mailto: info@newnippon.in">info@newnippon.in</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Locate Us on Map</h3>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14018.899165114288!2d77.2519666!3d28.5479907!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce39582e194c3%3A0x16a0bdc76266250!2sNEW+NIPPON+RETAIL+STORE!5e0!3m2!1sen!2sin!4v1561634096645!5m2!1sen!2sin"
+                        width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).on('click',".remove",function(){
+            var remove = this.id;
+            $.ajax({
+                url: "/remove/"+remove,
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (response) {
+                    jQuery.noConflict();
+                    if(response.status == "deleted")
+                    {
+                        $("."+remove).css("display","none");
+                        $("#amount").text(response.amount);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
