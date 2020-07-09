@@ -8,8 +8,13 @@ from django.contrib.auth import authenticate, login, logout
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .Paytm import Checksum
+<<<<<<< HEAD
 from django.conf import settings
 from django.core.mail import send_mail
+=======
+
+MERCHANT_KEY = 'Enter your own Merchant_key'
+>>>>>>> 655eeb2307738a1f9148b77752852e5867758949
 
 def home(request):
     electronic = Laptop.objects.all()
@@ -133,7 +138,11 @@ def order(request):
     product_order = Order.objects.create(product_name = product_name, total_amount = amount, order_receive = name,receiver_phone = phone,address = address,address1 = address1,landmark = landmark,city = city,State = state,zip = passcode)
     product_order.save()
     param_dict = {
+<<<<<<< HEAD
                 'MID': settings.MERCHANT_ID,
+=======
+                'MID': 'Enter your own MID',
+>>>>>>> 655eeb2307738a1f9148b77752852e5867758949
                 'ORDER_ID': str(product_order.order_id),
                 'TXN_AMOUNT': str(amount),
                 'CUST_ID': user_id,
@@ -195,7 +204,11 @@ def my_cart_order(request):
     product_order = Order.objects.create(product_name = f"{product_name}",total_amount = amount,order_receive = name,receiver_phone = phone,address = address,address1 = address1,landmark = landmark,city = city,State = state,zip = passcode)
     product_order.save()
     param_dict = {
+<<<<<<< HEAD
                 'MID': settings.MERCHANT_ID,
+=======
+                'MID': 'Enter your own MID',
+>>>>>>> 655eeb2307738a1f9148b77752852e5867758949
                 'ORDER_ID': str(product_order.order_id),
                 'TXN_AMOUNT': str(amount),
                 'CUST_ID': user_id,
