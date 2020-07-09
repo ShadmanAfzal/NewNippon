@@ -2,7 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'xy@6$)@@gc3o&edhurdh39c$uc_+7k9oi%200$mii19j+329ym'
+SECRET_KEY = 'confidential'
 
 DEBUG = True
 
@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'Electronics',
     'ckeditor',
     'django_cleanup.apps.CleanupConfig',
-    'django.contrib.humanize'
-    
+    'django.contrib.humanize',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -97,8 +97,19 @@ USE_L10N = True
 USE_TZ = True
 
 
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/Media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
+
+
+MERCHANT_KEY = 'Enter your own Paymt Merchant Key'
+MERCHANT_ID = 'Enter your own Paymt Merchant ID'
+
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'Your Email Id'
+EMAIL_HOST_PASSWORD = 'Your Password'
+DEFAULT_FROM_EMAIL = 'techalpha1999@gmail.com'

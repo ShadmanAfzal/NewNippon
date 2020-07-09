@@ -1,5 +1,6 @@
 {% load static %}
 {% load humanize %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -139,7 +140,7 @@
             <p class="lead my-3">{{item.small_desc}}</p>
           </div>
           <div class="col-md-5 my-auto">
-            <img src="{{item.image.url}}" alt="" srcset="" class="img-fluid" />
+            <img src="{{item.image_url}}" alt="" srcset="" class="img-fluid" />
           </div>
         </div>
       </div>
@@ -173,7 +174,7 @@
               Add to Cart
             </button>
             {% endif %}
-            <a href="/buy/{{items}}/{{item.name}}" class="btn btn-danger col-lg-5" role="button" style="color: white !important">Buy Now</a>
+            <a href="/buy/{{items}}/{{item.slug}}" class="btn btn-danger col-lg-5" role="button" style="color: white !important">Buy Now</a>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 from .models import Laptop, Mobile, About, Cart, Order, Order_Recieve
@@ -8,8 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .Paytm import Checksum
-MERCHANT_KEY = 'E9@MhdmWh8I61jcX'
-# MERCHANT_KEY = 'bKMfNxPPf_QdZppa'
+from django.conf import settings
+from django.core.mail import send_mail
 
 def home(request):
     electronic = Laptop.objects.all()
@@ -19,14 +19,13 @@ def home(request):
         my_cart = Cart.objects.all().filter(user_email= request.user.email)
     else:
         my_cart = ""
-    # messages.add_message(request, messages.SUCCESS, "success")
     return render(request, 'index.html', {"electronic":electronic, "mobile":mobile, "about":about, "cart_item":my_cart})
 
 def detail(request, item, id):
     if(item == "laptop"):
-        detail = Laptop.objects.all().filter(name=id)
+        detail = Laptop.objects.all().filter(slug=id)
     elif (item == "mobile"):
-        detail = Mobile.objects.all().filter(name=id)
+        detail = Mobile.objects.all().filter(slug=id)
     else:
         detail = "none"
     if request.user.is_authenticated:
@@ -38,9 +37,9 @@ def detail(request, item, id):
 def buy(request, item, name):
     if request.method == "GET":
         if(item == "laptop"):
-            detail = Laptop.objects.all().filter(name=name)
+            detail = Laptop.objects.all().filter(slug=name)
         else:
-            detail = Mobile.objects.all().filter(name=name)
+            detail = Mobile.objects.all().filter(slug=name)
         if request.user.is_authenticated:
             my_cart = Cart.objects.all().filter(user_email= request.user.email)
         else:
@@ -126,16 +125,15 @@ def order(request):
     if request.user.is_authenticated:
         user_id = request.user.email
     else:
-        user_id = name
+        user_id = phone
     if product_type == "laptop":
         amount = Laptop.objects.all().filter(name=product_name)[0].price + 200
     if product_type == "mobile":
         amount = Mobile.objects.all().filter(name=product_name)[0].price + 200    
-    product_order = Order.objects.create(product_name = product_name,total_amount = amount,order_receive = name,receiver_phone = phone,address = address,address1 = address1,landmark = landmark,city = city,State = state,zip = passcode)
+    product_order = Order.objects.create(product_name = product_name, total_amount = amount, order_receive = name,receiver_phone = phone,address = address,address1 = address1,landmark = landmark,city = city,State = state,zip = passcode)
     product_order.save()
     param_dict = {
-                'MID': 'JLyKHw92166866405106',
-                # 'MID': 'DIY12386817555501617',
+                'MID': settings.MERCHANT_ID,
                 'ORDER_ID': str(product_order.order_id),
                 'TXN_AMOUNT': str(amount),
                 'CUST_ID': user_id,
@@ -144,7 +142,7 @@ def order(request):
                 'CHANNEL_ID': 'WEB',
                 'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest',
     }
-    param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+    param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, settings.MERCHANT_KEY)
     return render(request, 'paytm.html', {'param_dict': param_dict})
 
 
@@ -156,13 +154,15 @@ def handlerequest(request):
         response_dict[i] = form[i]
         if i == 'CHECKSUMHASH':
             checksum = form[i]
-    verify = Checksum.verify_checksum(response_dict, MERCHANT_KEY, checksum)
+    verify = Checksum.verify_checksum(response_dict, settings.MERCHANT_KEY, checksum)
     if verify:
         if response_dict['RESPCODE'] == '01':
             pro = Order.objects.get(pk=response_dict['ORDERID'])
             product_name = pro.product_name
             Order_Recieve.objects.create(order_id = response_dict['ORDERID'], product_name = product_name, Currency = response_dict['CURRENCY'], GatewayName = response_dict['GATEWAYNAME'], Respmsg = response_dict['RESPMSG'], Bankname = response_dict['BANKNAME'], PAYMENTMODE = response_dict['PAYMENTMODE'], respcode = response_dict['RESPCODE'], Txnid = response_dict['TXNID'], txnamount = response_dict['TXNAMOUNT'], Status = response_dict['STATUS'], BANKTXNID = response_dict['BANKTXNID'], TXNDATE = response_dict['TXNDATE']).save()
             print('order successful')
+            send_mail("Order Confirmation", f"Your order <i>{product_name}</i> has been received. Order No-<i>{response_dict['ORDERID']}</i>\nPlease Contact <b>9650560450</b> for futher updates.", settings.DEFAULT_FROM_EMAIL,["shadman.afzal.7@gmail.com"],fail_silently=True,html_message=True)
+            print("mail send")
             messages.add_message(request, messages.SUCCESS, "success")
         else:
             messages.add_message(request, messages.SUCCESS, "failed")
@@ -191,11 +191,11 @@ def my_cart_order(request):
         product_name.append(my_cart[i].product_name)
         amount = amount + int(my_cart[i].price)+ 200
     user_id = request.user.email
+    print(user_id)
     product_order = Order.objects.create(product_name = f"{product_name}",total_amount = amount,order_receive = name,receiver_phone = phone,address = address,address1 = address1,landmark = landmark,city = city,State = state,zip = passcode)
     product_order.save()
     param_dict = {
-                'MID': 'JLyKHw92166866405106',
-                # 'MID': 'DIY12386817555501617',
+                'MID': settings.MERCHANT_ID,
                 'ORDER_ID': str(product_order.order_id),
                 'TXN_AMOUNT': str(amount),
                 'CUST_ID': user_id,
@@ -204,5 +204,5 @@ def my_cart_order(request):
                 'CHANNEL_ID': 'WEB',
                 'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest',
     }
-    param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+    param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, settings.MERCHANT_KEY)
     return render(request, 'paytm.html', {'param_dict': param_dict})

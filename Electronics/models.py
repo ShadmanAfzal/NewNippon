@@ -1,17 +1,27 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.utils import timezone
-
+from django.utils.text import slugify
+from Electronics.fire_store import put_get_image_url
 
 class Laptop(models.Model):
     name = models.CharField(max_length=100)
-    details = RichTextField(blank=True,null=True)
+    details = RichTextField(blank=True, null=True)
     price = models.IntegerField()
     image = models.ImageField(upload_to="Laptops")
+    image_url = models.URLField(default='None',blank=True)
     reviews = models.IntegerField(default=3)
+    slug = models.SlugField(default="",max_length=300, blank=True)
     small_desc = models.TextField(blank=True, default="none", max_length=500)
+    
+
     def __str__(self):
         return self.name
+    def save(self, *args, **kwargs):
+        if self.image_url == "None":
+            self.image_url = put_get_image_url(self.name, f"Media/Laptops/{self.image}") 
+        self.slug = slugify(self.name)
+        super(Laptop, self).save(*args, **kwargs) 
     
 class Mobile(models.Model):
     name = models.CharField(max_length=100)
@@ -19,9 +29,19 @@ class Mobile(models.Model):
     price = models.IntegerField()
     image = models.ImageField(upload_to="Mobiles")
     reviews = models.IntegerField(default=3)
+    slug = models.SlugField(default="",max_length=300,blank=True)
+    image_url = models.URLField(default='None', blank=True)
     small_desc = models.TextField(blank=True, default="none", max_length=500)    
+    
     def __str__(self):
+        print(self.image)
         return self.name
+
+    def save(self, *args, **kwargs): 
+        if self.image_url == "None":
+            self.image_url = put_get_image_url(self.name, f"Media/Mobiles/{self.image}") 
+        self.slug = slugify(self.name)
+        super(Mobile, self).save(*args, **kwargs)
 
 class About(models.Model):
     details = RichTextField(blank=True, null=True)
@@ -77,4 +97,4 @@ class Order_Recieve(models.Model):
 
     def __str__(self):
         return str(self.order_id) +"|"+ self.product_name
-    
+
