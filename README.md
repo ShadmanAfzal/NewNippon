@@ -1,14 +1,14 @@
 # NewNippon
 NewNippon - An E-Commerce Website featuring a great series of Electronics Items..
 
-# Tech
+## Tech Used
 1. Django(Backend)
 2. HTML,CSS, JavaScript(Frontend)
 3. SqLite(Database)
 
-# SEO
+## SEO
 1. Added Meta Tags
 2. Added Sitemaps.xml
 
-# Firebase Cloud Storage
+## Firebase Cloud Storage
 Used Firebase Cloud Storage to upload media files to Cloud.
